@@ -1,7 +1,3 @@
-"""
-CSCC11 - Introduction to Machine Learning, Winter 2024, Assignment 1
-"""
-
 import numpy as np
 
 class RBFRegression():
@@ -45,7 +41,6 @@ class RBFRegression():
         rbf_width = self.widths[[i-1]]
 
         # ====================================================
-        # TODO: 
         # Use the selected center and width to compute the RBF
         diff = X - rbf_center
         dist_square = np.sum(diff ** 2, axis=1, keepdims=True)
@@ -63,7 +58,6 @@ class RBFRegression():
         output:
             - ndarray (shape: (N, 1)): A N-column vector consisting N scalar output data.
 
-        NOTE: You must not iterate through inputs. HINT: You can use self.rbf_2d to compute b_i(X).
         """
         assert X.shape[1] == 2, f"Each input should contain two components. Got: {X.shape[1]}"
 
@@ -88,14 +82,14 @@ class RBFRegression():
             - train_Y (ndarray (shape: (N, 1))): A N-column vector consisting N scalar training outputs.
             - l2_coeff (float): The lambda term that decides how much regularization we want.
 
-        NOTE: Review from notes the least squares solution with l2 regularization.
+        PS: least squares solution with l2 regularization.
         """
         assert train_X.shape[0] == train_Y.shape[0], f"Number of inputs and outputs are different. (train_X: {train_X.shape[0]}, train_Y: {train_Y.shape[0]})"
         assert train_X.shape[1] == 2, f"Each input should contain two components. Got: {train_X.shape[1]}"
         assert train_Y.shape[1] == 1, f"Each output should contain 1 component. Got: {train_Y.shape[1]}"
 
         # ====================================================
-        # TODO: Set self.parameters to regularized least square solution for the radial basis function
+        # Set self.parameters to regularized least square solution for the radial basis function
         B = np.ones((train_X.shape[0], self.K + 1))# a K+1**2 square matrix = 1
         for i in range(1, self.K + 1):#on 2nd column
             B[:, i] = self.rbf_2d(train_X, i).flatten()
@@ -112,8 +106,7 @@ class RBFRegression():
 
 
 if __name__ == "__main__":
-    # You can use linear regression to check whether your implementation is correct.
-    # NOTE: This is just a quick check but does not cover all cases.
+
     centers = np.tile(np.expand_dims(np.arange(2), axis=1), reps=(1, 2))
     widths = np.ones((2, 1))
     model = RBFRegression(centers, widths)

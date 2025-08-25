@@ -1,7 +1,3 @@
-"""
-CSCC11 - Introduction to Machine Learning, Winter 2024, Assignment 1
-"""
-
 import numpy as np
 
 class PolynomialRegression:
@@ -15,8 +11,7 @@ class PolynomialRegression:
             - parameters (ndarray (shape: (K + 1, 1))): The model parameters.
             - l2_coeff (float): The coefficient of the L2 regularization term.
 
-        NOTE: The bias term is the first element in self.parameters 
-            (i.e. self.parameters = [b, w_1, ..., w_K]^T).
+        The bias term is the first element in self.parameters (i.e. self.parameters = [b, w_1, ..., w_K]^T).
         """
         assert 1 <= K <= 15, f"K must be between 1 and 15. Got: {K}"
         assert l2_coeff >= 0, f"l2_coeff must be non-negative. Got: {l2_coeff}"
@@ -26,20 +21,18 @@ class PolynomialRegression:
         self.parameters = np.ones((K + 1, 1), dtype=np.float32)
 
     def predict(self, X):
-        """ This method evaluates the polynomial model at N input data points. 
-        You need to use self.parameters and the input X
+        """ evaluates the polynomial model at N input data points. 
 
         args:
             - X (ndarray (shape: (N, 1))): A column vector consisting N scalar input data.
         output:
             - prediction (ndarray (shape: (N, 1))): A column vector consisting N scalar output data. 
         
-        NOTE: You MUST NOT iterate through inputs.
         """
         assert X.shape == (X.shape[0], 1)
         
         # ====================================================
-        # TODO: return the output of the polynomial function
+        # return the output of the polynomial function
         features = np.vander(X.flatten(), N = self.parameters.size, increasing = True)
         # [1,x1,x1^2,x1^3...x1^k]
         # [1,x2,x2^2,x2^3...x2^k]
@@ -51,19 +44,18 @@ class PolynomialRegression:
     
     def fit(self, train_X, train_Y):
         """ This method fits the model parameters, given the training inputs and outputs.
-            This method does not have output. You only need to update self.parameters.
+            This method does not have output.
 
         args:
             - train_X (ndarray (shape: (N, 1))): A N-column vector consisting N scalar training inputs.
             - train_Y (ndarray (shape: (N, 1))): A N-column vector consisting N scalar training outputs.
         
-        NOTE: Review from notes the least squares solution.
         """
         assert train_X.shape == train_Y.shape and train_X.shape == (train_X.shape[0], 1), f"input and/or output has incorrect shape (train_X: {train_X.shape}, train_Y: {train_Y.shape})."
         assert train_X.shape[0] >= self.K, f"require more data points to fit a polynomial (train_X: {train_X.shape}, K: {self.K}). Do you know why?"
 
         # ===========================================================================
-        # TODO: Set self.parameters to least square solution for the polynomial basis
+        #  Set self.parameters to least square solution for the polynomial basis
         B = np.vander(train_X.flatten(), N=self.K + 1, increasing=True)
         C = np.linalg.inv(B.T.dot(B)).dot(B.T)#C = B+
 
@@ -74,14 +66,14 @@ class PolynomialRegression:
 
     def fit_with_l2_regularization(self, train_X, train_Y):
         """ This method fits the model parameters with L2 regularization, given the training inputs and outputs.
-        This method does not have output. You only need to update self.parameters.
+        This method does not have output.
 
         args:
             - train_X (ndarray (shape: (N, 1))): A N-column vector consisting N scalar training inputs.
             - train_Y (ndarray (shape: (N, 1))): A N-column vector consisting N scalar training outputs.
             - l2_coef (float): The lambda term that decides how much regularization we want.
             
-        NOTE: Review from notes the least squares solution when l2 regularization is added.
+  
         """
         assert train_X.shape == train_Y.shape and train_X.shape == (train_X.shape[0], 1), f"input and/or output has incorrect shape (train_X: {train_X.shape}, train_Y: {train_Y.shape})."
 
